@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+.venv/
+__pycache__/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Build outputs
+.next/
+out/
+dist/
+build/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Secrets
+*.pem
+vercel_token.txt
+
+# Non-code assets
+*.pdf
+portfolio.md
+
+# Lock files (keep package-lock.json, exclude Python venv locks)
+uv.lock
+
+# Misc
+*.log
