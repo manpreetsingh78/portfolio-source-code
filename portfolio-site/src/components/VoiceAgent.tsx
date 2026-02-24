@@ -14,7 +14,7 @@ import { TokenSource } from 'livekit-client';
 const tokenSource = TokenSource.endpoint('/api/voice-token');
 
 /* ────────────────────────────────────────────────────────────────────────────
-   Boy Avatar SVG — stylized cartoon male developer illustration
+   Boy Avatar SVG — professional young man with glasses, suit & tie
    ──────────────────────────────────────────────────────────────────────────── */
 function BoyAvatar({ state }: { state: string }) {
   const isActive = state !== 'idle' && state !== 'initializing';
@@ -45,144 +45,183 @@ function BoyAvatar({ state }: { state: string }) {
     return () => clearInterval(iv);
   }, [isSpeaking]);
 
-  const mouthY = isSpeaking ? 2 + mouthOpen * 4 : 0;
+  const mouthRy = isSpeaking ? 1.5 + mouthOpen * 3.5 : 0;
 
   return (
     <svg viewBox="0 0 120 120" className="w-full h-full" aria-hidden>
       <defs>
-        {/* Skin gradient */}
+        {/* Skin gradient — fair/light tone */}
         <linearGradient id="skin" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#f5c9a8" />
-          <stop offset="100%" stopColor="#e8b08a" />
+          <stop offset="0%" stopColor="#fce4d0" />
+          <stop offset="100%" stopColor="#f0cdb0" />
         </linearGradient>
-        {/* Hair gradient */}
+        {/* Hair gradient — dark brown */}
         <linearGradient id="hair" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#1a1a2e" />
-          <stop offset="100%" stopColor="#16213e" />
+          <stop offset="0%" stopColor="#3b2417" />
+          <stop offset="100%" stopColor="#2a1a10" />
         </linearGradient>
-        {/* Hoodie gradient */}
-        <linearGradient id="hoodie" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#1e293b" />
-          <stop offset="100%" stopColor="#0f172a" />
+        {/* Suit / blazer gradient */}
+        <linearGradient id="blazer" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#2d2d2d" />
+          <stop offset="100%" stopColor="#1a1a1a" />
         </linearGradient>
-        {/* Hoodie accent */}
-        <linearGradient id="hoodieAccent" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#06b6d4" />
-          <stop offset="100%" stopColor="#0891b2" />
+        {/* Tie gradient — dark teal */}
+        <linearGradient id="tie" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#1a5c5c" />
+          <stop offset="100%" stopColor="#134545" />
         </linearGradient>
         {/* Background circle */}
         <radialGradient id="bgCircle" cx="50%" cy="45%" r="55%">
-          <stop offset="0%" stopColor={isActive ? '#0f2a3d' : '#1e293b'} />
-          <stop offset="100%" stopColor={isActive ? '#0a1628' : '#0f172a'} />
+          <stop offset="0%" stopColor={isActive ? '#e8eff7' : '#f0f4f8'} />
+          <stop offset="100%" stopColor={isActive ? '#c8d6e5' : '#dde4ec'} />
         </radialGradient>
         {/* Glow */}
         <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
           <feGaussianBlur stdDeviation="1.5" result="b" />
           <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
         </filter>
+        {/* Shadow under head */}
+        <filter id="headShadow" x="-10%" y="-10%" width="120%" height="130%">
+          <feDropShadow dx="0" dy="2" stdDeviation="2" floodColor="#00000020" />
+        </filter>
       </defs>
 
       {/* Background */}
       <circle cx="60" cy="60" r="58" fill="url(#bgCircle)" />
 
+      {/* ── Body / Suit ── */}
+      {/* Shoulders + blazer */}
+      <path d="M18,120 Q18,92 38,86 L60,82 L82,86 Q102,92 102,120 Z" fill="url(#blazer)" />
+      {/* Lapels */}
+      <path d="M48,88 L56,98 L60,92" fill="none" stroke="#3d3d3d" strokeWidth="1" />
+      <path d="M72,88 L64,98 L60,92" fill="none" stroke="#3d3d3d" strokeWidth="1" />
+      {/* Left lapel fill */}
+      <path d="M42,86 L48,88 L56,98 L60,92 L60,120 L18,120 Q18,92 38,86 Z" fill="#333" opacity="0.3" />
+      {/* Right lapel fill */}
+      <path d="M78,86 L72,88 L64,98 L60,92 L60,120 L102,120 Q102,92 82,86 Z" fill="#333" opacity="0.3" />
+
+      {/* White shirt visible at chest */}
+      <path d="M48,88 L56,98 L60,92 L64,98 L72,88 L68,84 L60,82 L52,84 Z" fill="#f5f5f5" />
+      <path d="M56,98 L60,92 L64,98 L62,120 L58,120 Z" fill="#efefef" />
+
+      {/* Tie */}
+      <path d="M58.5,92 L60,90 L61.5,92 L62,108 L60,112 L58,108 Z" fill="url(#tie)" />
+      {/* Tie knot */}
+      <path d="M58.8,90 L60,88.5 L61.2,90 L61,92 L59,92 Z" fill="#1a5c5c" />
+      {/* Tie stripe detail */}
+      <line x1="59.2" y1="95" x2="60.8" y2="95" stroke="#1e6b6b" strokeWidth="0.6" opacity="0.5" />
+      <line x1="59" y1="99" x2="61" y2="99" stroke="#1e6b6b" strokeWidth="0.6" opacity="0.5" />
+      <line x1="58.8" y1="103" x2="61.2" y2="103" stroke="#1e6b6b" strokeWidth="0.6" opacity="0.5" />
+
+      {/* Shirt collar */}
+      <path d="M52,84 L48,88 L53,87" fill="#f0f0f0" stroke="#e0e0e0" strokeWidth="0.3" />
+      <path d="M68,84 L72,88 L67,87" fill="#f0f0f0" stroke="#e0e0e0" strokeWidth="0.3" />
+
       {/* Neck */}
-      <rect x="50" y="78" width="20" height="14" rx="4" fill="url(#skin)" />
+      <rect x="52" y="76" width="16" height="10" rx="3" fill="url(#skin)" />
 
-      {/* Hoodie / Shoulders */}
-      <path d="M28,120 Q28,88 42,84 L60,80 L78,84 Q92,88 92,120 Z" fill="url(#hoodie)" />
-      {/* Hoodie neckline */}
-      <path d="M46,87 L54,94 L60,90 L66,94 L74,87" fill="none" stroke="#334155" strokeWidth="1.2" strokeLinecap="round" />
-      {/* Hoodie drawstring */}
-      <line x1="54" y1="94" x2="52" y2="102" stroke="#94a3b8" strokeWidth="0.8" strokeLinecap="round" />
-      <line x1="66" y1="94" x2="68" y2="102" stroke="#94a3b8" strokeWidth="0.8" strokeLinecap="round" />
-      {/* Cyan accent stripe on hoodie */}
-      <path d="M43,86 Q50,92 60,88 Q70,92 77,86" fill="none" stroke="url(#hoodieAccent)" strokeWidth="1.5" strokeLinecap="round" opacity="0.7" />
-
-      {/* Head shape */}
-      <ellipse cx="60" cy="58" rx="26" ry="28" fill="url(#skin)" />
+      {/* ── Head ── */}
+      <ellipse cx="60" cy="55" rx="24" ry="26" fill="url(#skin)" filter="url(#headShadow)" />
 
       {/* Ears */}
-      <ellipse cx="34" cy="60" rx="5" ry="6" fill="#e8b08a" />
-      <ellipse cx="34" cy="60" rx="3" ry="4" fill="#daa07a" />
-      <ellipse cx="86" cy="60" rx="5" ry="6" fill="#e8b08a" />
-      <ellipse cx="86" cy="60" rx="3" ry="4" fill="#daa07a" />
+      <ellipse cx="36" cy="57" rx="4.5" ry="5.5" fill="#f0cdb0" />
+      <ellipse cx="36" cy="57" rx="2.8" ry="3.5" fill="#e6bfa0" />
+      <ellipse cx="84" cy="57" rx="4.5" ry="5.5" fill="#f0cdb0" />
+      <ellipse cx="84" cy="57" rx="2.8" ry="3.5" fill="#e6bfa0" />
 
-      {/* Hair — thick, dark, messy-styled */}
-      <path d="M34,48 Q34,22 60,20 Q86,22 86,48 L86,42 Q84,26 60,24 Q36,26 34,42 Z" fill="url(#hair)" />
-      {/* Hair volume top */}
-      <path d="M32,48 Q30,28 55,18 Q70,16 80,22 Q90,28 88,48 Q86,30 60,26 Q38,28 34,46 Z" fill="url(#hair)" />
-      {/* Side hair strands */}
-      <path d="M34,46 Q30,42 32,36 Q36,30 38,34 Q36,38 36,46" fill="url(#hair)" />
-      <path d="M86,46 Q90,42 88,36 Q84,30 82,34 Q84,38 84,46" fill="url(#hair)" />
-      {/* Fringe / bangs */}
-      <path d="M38,42 Q42,30 52,28 L48,40 Z" fill="#16213e" opacity="0.9" />
-      <path d="M44,38 Q50,26 62,26 L55,38 Z" fill="#1a1a2e" opacity="0.85" />
-      <path d="M76,40 Q78,30 72,28 L70,38 Z" fill="#16213e" opacity="0.8" />
+      {/* ── Hair — dark brown, combed/neat style ── */}
+      {/* Main hair mass */}
+      <path d="M36,46 Q36,22 60,18 Q84,22 84,46 L84,40 Q82,26 60,23 Q38,26 36,40 Z" fill="url(#hair)" />
+      {/* Volume on top */}
+      <path d="M34,46 Q32,26 56,16 Q72,14 82,20 Q92,26 88,46 Q86,28 60,24 Q38,26 36,44 Z" fill="url(#hair)" />
+      {/* Side hair */}
+      <path d="M36,44 Q34,40 35,34 Q38,28 40,32 Q38,36 38,44" fill="url(#hair)" />
+      <path d="M84,44 Q86,40 85,34 Q82,28 80,32 Q82,36 82,44" fill="url(#hair)" />
+      {/* Fringe — parted, swept slightly right */}
+      <path d="M40,40 Q44,28 56,24 L50,38 Z" fill="#2a1a10" opacity="0.85" />
+      <path d="M46,36 Q52,24 66,24 L58,36 Z" fill="#3b2417" opacity="0.8" />
+      <path d="M78,40 Q80,30 74,26 L72,36 Z" fill="#2a1a10" opacity="0.7" />
       {/* Hair highlight */}
-      <path d="M50,24 Q58,20 66,22" fill="none" stroke="#2a3a5e" strokeWidth="1.5" strokeLinecap="round" opacity="0.5" />
+      <path d="M52,22 Q60,18 68,20" fill="none" stroke="#5a3a28" strokeWidth="1.2" strokeLinecap="round" opacity="0.4" />
 
-      {/* Eyebrows */}
-      <path d={`M45,${isListening ? 47 : 49} Q50,${isListening ? 45 : 47} 55,${isListening ? 47 : 49}`}
-        fill="none" stroke="#1a1a2e" strokeWidth="1.8" strokeLinecap="round" />
-      <path d={`M65,${isListening ? 47 : 49} Q70,${isListening ? 45 : 47} 75,${isListening ? 47 : 49}`}
-        fill="none" stroke="#1a1a2e" strokeWidth="1.8" strokeLinecap="round" />
+      {/* ── Eyebrows ── */}
+      <path d={`M46,${isListening ? 45 : 47} Q50,${isListening ? 43 : 45} 54,${isListening ? 45.5 : 47.5}`}
+        fill="none" stroke="#3b2417" strokeWidth="1.6" strokeLinecap="round" />
+      <path d={`M66,${isListening ? 45.5 : 47.5} Q70,${isListening ? 43 : 45} 74,${isListening ? 45 : 47}`}
+        fill="none" stroke="#3b2417" strokeWidth="1.6" strokeLinecap="round" />
 
-      {/* Eyes */}
+      {/* ── Glasses ── */}
+      {/* Left lens */}
+      <ellipse cx="50" cy="54" rx="8" ry="7.5" fill="none" stroke="#3d3020" strokeWidth="1.6" />
+      {/* Right lens */}
+      <ellipse cx="70" cy="54" rx="8" ry="7.5" fill="none" stroke="#3d3020" strokeWidth="1.6" />
+      {/* Bridge */}
+      <path d="M58,54 Q60,52 62,54" fill="none" stroke="#3d3020" strokeWidth="1.4" />
+      {/* Temple arms */}
+      <line x1="42" y1="53" x2="36" y2="55" stroke="#3d3020" strokeWidth="1.2" strokeLinecap="round" />
+      <line x1="78" y1="53" x2="84" y2="55" stroke="#3d3020" strokeWidth="1.2" strokeLinecap="round" />
+      {/* Lens reflection */}
+      <ellipse cx="46" cy="51" rx="2.5" ry="1.5" fill="white" opacity="0.12" />
+      <ellipse cx="66" cy="51" rx="2.5" ry="1.5" fill="white" opacity="0.12" />
+
+      {/* ── Eyes ── */}
       {blink ? (
         <>
-          <line x1="46" y1="56" x2="55" y2="56" stroke="#1a1a2e" strokeWidth="2" strokeLinecap="round" />
-          <line x1="65" y1="56" x2="74" y2="56" stroke="#1a1a2e" strokeWidth="2" strokeLinecap="round" />
+          <line x1="46" y1="55" x2="54" y2="55" stroke="#2a1a10" strokeWidth="1.8" strokeLinecap="round" />
+          <line x1="66" y1="55" x2="74" y2="55" stroke="#2a1a10" strokeWidth="1.8" strokeLinecap="round" />
         </>
       ) : (
         <>
           {/* Left eye */}
-          <ellipse cx="50" cy="56" rx="5.5" ry="5.5" fill="white" />
-          <circle cx={isThinking ? 52 : 50.5} cy={isListening ? 55 : 56} r="3" fill="#1a1a2e" />
-          <circle cx={isThinking ? 53 : 51.5} cy={isListening ? 54 : 55} r="1" fill="white" />
+          <ellipse cx="50" cy="55" rx="4" ry="4.2" fill="white" />
+          <circle cx={isThinking ? 52 : 50.5} cy={isListening ? 54 : 55} r="2.8" fill="#2a1a10" />
+          <circle cx={isThinking ? 52.8 : 51.2} cy={isListening ? 53.2 : 54.2} r="0.9" fill="white" />
 
           {/* Right eye */}
-          <ellipse cx="70" cy="56" rx="5.5" ry="5.5" fill="white" />
-          <circle cx={isThinking ? 72 : 70.5} cy={isListening ? 55 : 56} r="3" fill="#1a1a2e" />
-          <circle cx={isThinking ? 73 : 71.5} cy={isListening ? 54 : 55} r="1" fill="white" />
+          <ellipse cx="70" cy="55" rx="4" ry="4.2" fill="white" />
+          <circle cx={isThinking ? 72 : 70.5} cy={isListening ? 54 : 55} r="2.8" fill="#2a1a10" />
+          <circle cx={isThinking ? 72.8 : 71.2} cy={isListening ? 53.2 : 54.2} r="0.9" fill="white" />
         </>
       )}
 
       {/* Nose */}
-      <path d="M58,63 Q60,66 62,63" fill="none" stroke="#d49a76" strokeWidth="1.2" strokeLinecap="round" />
+      <path d="M58,62 Q60,65 62,62" fill="none" stroke="#daa885" strokeWidth="1.1" strokeLinecap="round" />
 
       {/* Mouth */}
       {isSpeaking ? (
-        <ellipse cx="60" cy="72" rx={3 + mouthOpen * 2} ry={1 + mouthY} fill="#c0392b" />
+        <ellipse cx="60" cy="70" rx={2.5 + mouthOpen * 1.8} ry={mouthRy} fill="#c0392b" />
       ) : (
-        <path d={isListening ? "M54,71 Q60,76 66,71" : "M55,71 Q60,74 65,71"}
-          fill="none" stroke="#c0392b" strokeWidth="1.5" strokeLinecap="round" />
+        <path d={isListening ? "M55,69 Q60,73 65,69" : "M56,69 Q60,72 64,69"}
+          fill="none" stroke="#b85450" strokeWidth="1.3" strokeLinecap="round" />
       )}
 
       {/* Cheek blush */}
-      <circle cx="40" cy="66" r="4" fill="#f0a090" opacity="0.3" />
-      <circle cx="80" cy="66" r="4" fill="#f0a090" opacity="0.3" />
+      <circle cx="40" cy="64" r="4" fill="#f0a090" opacity="0.2" />
+      <circle cx="80" cy="64" r="4" fill="#f0a090" opacity="0.2" />
 
-      {/* Headphones for listening state */}
+      {/* ── State-specific effects ── */}
+
+      {/* Headphones for listening */}
       {isListening && (
         <>
-          <path d="M32,52 Q30,40 38,32" fill="none" stroke="#22d3ee" strokeWidth="2.5" strokeLinecap="round" opacity="0.8" filter="url(#softGlow)" />
-          <path d="M88,52 Q90,40 82,32" fill="none" stroke="#22d3ee" strokeWidth="2.5" strokeLinecap="round" opacity="0.8" filter="url(#softGlow)" />
-          <rect x="28" y="52" width="8" height="12" rx="3" fill="#22d3ee" opacity="0.7" filter="url(#softGlow)" />
-          <rect x="84" y="52" width="8" height="12" rx="3" fill="#22d3ee" opacity="0.7" filter="url(#softGlow)" />
-          <path d="M32,44 Q32,28 60,24 Q88,28 88,44" fill="none" stroke="#22d3ee" strokeWidth="2.5" strokeLinecap="round" opacity="0.6" />
+          <path d="M34,50 Q32,38 40,30" fill="none" stroke="#22d3ee" strokeWidth="2.5" strokeLinecap="round" opacity="0.8" filter="url(#softGlow)" />
+          <path d="M86,50 Q88,38 80,30" fill="none" stroke="#22d3ee" strokeWidth="2.5" strokeLinecap="round" opacity="0.8" filter="url(#softGlow)" />
+          <rect x="30" y="50" width="7" height="11" rx="3" fill="#22d3ee" opacity="0.7" filter="url(#softGlow)" />
+          <rect x="83" y="50" width="7" height="11" rx="3" fill="#22d3ee" opacity="0.7" filter="url(#softGlow)" />
+          <path d="M34,42 Q34,24 60,20 Q86,24 86,42" fill="none" stroke="#22d3ee" strokeWidth="2.5" strokeLinecap="round" opacity="0.6" />
         </>
       )}
 
-      {/* Thinking dots */}
+      {/* Thinking bubbles */}
       {isThinking && (
         <>
-          <circle cx="92" cy="38" r="3" fill="#a78bfa" opacity="0.7" filter="url(#softGlow)">
+          <circle cx="92" cy="36" r="3" fill="#a78bfa" opacity="0.7" filter="url(#softGlow)">
             <animate attributeName="opacity" values="0.3;0.8;0.3" dur="1.2s" repeatCount="indefinite" />
           </circle>
-          <circle cx="98" cy="30" r="4" fill="#a78bfa" opacity="0.5" filter="url(#softGlow)">
+          <circle cx="98" cy="28" r="4" fill="#a78bfa" opacity="0.5" filter="url(#softGlow)">
             <animate attributeName="opacity" values="0.2;0.7;0.2" dur="1.2s" begin="0.3s" repeatCount="indefinite" />
           </circle>
-          <circle cx="102" cy="20" r="5" fill="#a78bfa" opacity="0.4" filter="url(#softGlow)">
+          <circle cx="102" cy="18" r="5" fill="#a78bfa" opacity="0.4" filter="url(#softGlow)">
             <animate attributeName="opacity" values="0.15;0.6;0.15" dur="1.2s" begin="0.6s" repeatCount="indefinite" />
           </circle>
         </>
@@ -191,13 +230,13 @@ function BoyAvatar({ state }: { state: string }) {
       {/* Speaking sound waves */}
       {isSpeaking && (
         <>
-          <path d="M88,68 Q94,60 88,52" fill="none" stroke="#34d399" strokeWidth="1.5" strokeLinecap="round" opacity="0.6" filter="url(#softGlow)">
+          <path d="M86,66 Q92,58 86,50" fill="none" stroke="#34d399" strokeWidth="1.5" strokeLinecap="round" opacity="0.6" filter="url(#softGlow)">
             <animate attributeName="opacity" values="0.6;0.2;0.6" dur="0.8s" repeatCount="indefinite" />
           </path>
-          <path d="M92,72 Q100,60 92,48" fill="none" stroke="#34d399" strokeWidth="1.2" strokeLinecap="round" opacity="0.4">
+          <path d="M90,70 Q98,58 90,46" fill="none" stroke="#34d399" strokeWidth="1.2" strokeLinecap="round" opacity="0.4">
             <animate attributeName="opacity" values="0.4;0.1;0.4" dur="0.8s" begin="0.2s" repeatCount="indefinite" />
           </path>
-          <path d="M96,76 Q106,60 96,44" fill="none" stroke="#34d399" strokeWidth="0.8" strokeLinecap="round" opacity="0.25">
+          <path d="M94,74 Q104,58 94,42" fill="none" stroke="#34d399" strokeWidth="0.8" strokeLinecap="round" opacity="0.25">
             <animate attributeName="opacity" values="0.25;0.05;0.25" dur="0.8s" begin="0.4s" repeatCount="indefinite" />
           </path>
         </>
