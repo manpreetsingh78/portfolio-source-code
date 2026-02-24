@@ -14,7 +14,8 @@ import { TokenSource } from 'livekit-client';
 const tokenSource = TokenSource.endpoint('/api/voice-token');
 
 /* ────────────────────────────────────────────────────────────────────────────
-   Boy Avatar SVG — professional young man with glasses, suit & tie
+   Hacker Boy Avatar — stylized cyberpunk boy with smart glasses & laptop
+   Uses bold flat shapes that read well at 88px. Dark theme, neon accents.
    ──────────────────────────────────────────────────────────────────────────── */
 function BoyAvatar({ state }: { state: string }) {
   const isActive = state !== 'idle' && state !== 'initializing';
@@ -31,213 +32,242 @@ function BoyAvatar({ state }: { state: string }) {
         setBlink(true);
         setTimeout(() => setBlink(false), 140);
         schedule();
-      }, 2800 + Math.random() * 2500);
+      }, 3000 + Math.random() * 2000);
     };
     schedule();
     return () => clearTimeout(t);
   }, []);
 
-  /* Mouth animation for speaking */
+  /* Mouth for speaking */
   const [mouthOpen, setMouthOpen] = useState(0);
   useEffect(() => {
     if (!isSpeaking) { setMouthOpen(0); return; }
-    const iv = setInterval(() => setMouthOpen(Math.random()), 120);
+    const iv = setInterval(() => setMouthOpen(Math.random()), 130);
     return () => clearInterval(iv);
   }, [isSpeaking]);
 
-  const mouthRy = isSpeaking ? 1.5 + mouthOpen * 3.5 : 0;
+  /* Glasses glow color per state */
+  const glassesGlow = isListening ? '#22d3ee' : isThinking ? '#a78bfa' : isSpeaking ? '#34d399' : '#06b6d4';
 
   return (
     <svg viewBox="0 0 120 120" className="w-full h-full" aria-hidden>
       <defs>
-        {/* Skin gradient — fair/light tone */}
-        <linearGradient id="skin" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#fce4d0" />
-          <stop offset="100%" stopColor="#f0cdb0" />
+        <linearGradient id="skinG" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#f5dcc3" />
+          <stop offset="100%" stopColor="#e8c4a0" />
         </linearGradient>
-        {/* Hair gradient — dark brown */}
-        <linearGradient id="hair" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#3b2417" />
-          <stop offset="100%" stopColor="#2a1a10" />
+        <linearGradient id="hairG" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#1a1a2e" />
+          <stop offset="100%" stopColor="#0d0d1a" />
         </linearGradient>
-        {/* Suit / blazer gradient */}
-        <linearGradient id="blazer" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#2d2d2d" />
-          <stop offset="100%" stopColor="#1a1a1a" />
+        <linearGradient id="hoodieG" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#1a1a2e" />
+          <stop offset="100%" stopColor="#0a0a18" />
         </linearGradient>
-        {/* Tie gradient — dark teal */}
-        <linearGradient id="tie" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#1a5c5c" />
-          <stop offset="100%" stopColor="#134545" />
+        <linearGradient id="laptopG" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#2a2a3e" />
+          <stop offset="100%" stopColor="#16162a" />
         </linearGradient>
-        {/* Background circle */}
-        <radialGradient id="bgCircle" cx="50%" cy="45%" r="55%">
-          <stop offset="0%" stopColor={isActive ? '#e8eff7' : '#f0f4f8'} />
-          <stop offset="100%" stopColor={isActive ? '#c8d6e5' : '#dde4ec'} />
+        <linearGradient id="screenG" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#0a2a3a" />
+          <stop offset="100%" stopColor="#061420" />
+        </linearGradient>
+        <radialGradient id="bgG" cx="50%" cy="45%" r="55%">
+          <stop offset="0%" stopColor={isActive ? '#0f1a2e' : '#111827'} />
+          <stop offset="100%" stopColor={isActive ? '#070d18' : '#0a0f1a'} />
         </radialGradient>
-        {/* Glow */}
-        <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
-          <feGaussianBlur stdDeviation="1.5" result="b" />
+        <filter id="neonGlow" x="-30%" y="-30%" width="160%" height="160%">
+          <feGaussianBlur stdDeviation="2" result="b" />
           <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
         </filter>
-        {/* Shadow under head */}
-        <filter id="headShadow" x="-10%" y="-10%" width="120%" height="130%">
-          <feDropShadow dx="0" dy="2" stdDeviation="2" floodColor="#00000020" />
+        <filter id="screenLight" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="4" result="b" />
+          <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
         </filter>
       </defs>
 
-      {/* Background */}
-      <circle cx="60" cy="60" r="58" fill="url(#bgCircle)" />
+      {/* Dark background */}
+      <circle cx="60" cy="60" r="58" fill="url(#bgG)" />
 
-      {/* ── Body / Suit ── */}
-      {/* Shoulders + blazer */}
-      <path d="M18,120 Q18,92 38,86 L60,82 L82,86 Q102,92 102,120 Z" fill="url(#blazer)" />
-      {/* Lapels */}
-      <path d="M48,88 L56,98 L60,92" fill="none" stroke="#3d3d3d" strokeWidth="1" />
-      <path d="M72,88 L64,98 L60,92" fill="none" stroke="#3d3d3d" strokeWidth="1" />
-      {/* Left lapel fill */}
-      <path d="M42,86 L48,88 L56,98 L60,92 L60,120 L18,120 Q18,92 38,86 Z" fill="#333" opacity="0.3" />
-      {/* Right lapel fill */}
-      <path d="M78,86 L72,88 L64,98 L60,92 L60,120 L102,120 Q102,92 82,86 Z" fill="#333" opacity="0.3" />
+      {/* ── Hoodie body ── */}
+      <path d="M22,120 Q22,92 40,86 L60,82 L80,86 Q98,92 98,120 Z" fill="url(#hoodieG)" />
+      {/* Hood outline */}
+      <path d="M40,86 Q48,80 60,78 Q72,80 80,86" fill="none" stroke="#2a2a4e" strokeWidth="1" />
+      {/* Hoodie pocket */}
+      <path d="M40,104 Q50,108 60,106 Q70,108 80,104" fill="none" stroke="#22223a" strokeWidth="0.8" opacity="0.6" />
+      {/* Neon accent line on hoodie */}
+      <path d="M42,88 Q52,94 60,90 Q68,94 78,88" fill="none" stroke="#06b6d4" strokeWidth="1" strokeLinecap="round" opacity="0.5" />
 
-      {/* White shirt visible at chest */}
-      <path d="M48,88 L56,98 L60,92 L64,98 L72,88 L68,84 L60,82 L52,84 Z" fill="#f5f5f5" />
-      <path d="M56,98 L60,92 L64,98 L62,120 L58,120 Z" fill="#efefef" />
+      {/* ── Arms holding laptop ── */}
+      {/* Left arm */}
+      <path d="M30,96 Q28,100 30,108 L42,106 Q38,98 40,92" fill="url(#hoodieG)" stroke="#1a1a2e" strokeWidth="0.5" />
+      {/* Right arm */}
+      <path d="M90,96 Q92,100 90,108 L78,106 Q82,98 80,92" fill="url(#hoodieG)" stroke="#1a1a2e" strokeWidth="0.5" />
 
-      {/* Tie */}
-      <path d="M58.5,92 L60,90 L61.5,92 L62,108 L60,112 L58,108 Z" fill="url(#tie)" />
-      {/* Tie knot */}
-      <path d="M58.8,90 L60,88.5 L61.2,90 L61,92 L59,92 Z" fill="#1a5c5c" />
-      {/* Tie stripe detail */}
-      <line x1="59.2" y1="95" x2="60.8" y2="95" stroke="#1e6b6b" strokeWidth="0.6" opacity="0.5" />
-      <line x1="59" y1="99" x2="61" y2="99" stroke="#1e6b6b" strokeWidth="0.6" opacity="0.5" />
-      <line x1="58.8" y1="103" x2="61.2" y2="103" stroke="#1e6b6b" strokeWidth="0.6" opacity="0.5" />
-
-      {/* Shirt collar */}
-      <path d="M52,84 L48,88 L53,87" fill="#f0f0f0" stroke="#e0e0e0" strokeWidth="0.3" />
-      <path d="M68,84 L72,88 L67,87" fill="#f0f0f0" stroke="#e0e0e0" strokeWidth="0.3" />
+      {/* ── Laptop ── */}
+      {/* Laptop base */}
+      <rect x="30" y="104" width="60" height="4" rx="1.5" fill="url(#laptopG)" />
+      {/* Laptop screen back */}
+      <path d="M34,104 L32,82 L88,82 L86,104 Z" fill="url(#laptopG)" opacity="0" />
+      {/* Laptop screen (open, tilted) */}
+      <rect x="34" y="88" width="52" height="16" rx="1.5" fill="url(#laptopG)" />
+      <rect x="36" y="89.5" width="48" height="13" rx="1" fill="url(#screenG)" />
+      {/* Screen glow */}
+      <rect x="36" y="89.5" width="48" height="13" rx="1" fill={glassesGlow} opacity="0.08" />
+      {/* Code lines on screen */}
+      <line x1="39" y1="92" x2="50" y2="92" stroke="#06b6d4" strokeWidth="0.7" opacity="0.6" />
+      <line x1="39" y1="94.5" x2="55" y2="94.5" stroke="#a78bfa" strokeWidth="0.7" opacity="0.4" />
+      <line x1="42" y1="97" x2="52" y2="97" stroke="#34d399" strokeWidth="0.7" opacity="0.5" />
+      <line x1="39" y1="99.5" x2="48" y2="99.5" stroke="#06b6d4" strokeWidth="0.7" opacity="0.3" />
+      {/* Screen blinking cursor */}
+      <rect x="54" y="96" width="1" height="3" fill="#06b6d4" opacity="0.9">
+        <animate attributeName="opacity" values="0.9;0;0.9" dur="1s" repeatCount="indefinite" />
+      </rect>
+      {/* Laptop screen face glow on chin area */}
+      <ellipse cx="60" cy="78" rx="12" ry="4" fill={glassesGlow} opacity="0.06" filter="url(#screenLight)" />
 
       {/* Neck */}
-      <rect x="52" y="76" width="16" height="10" rx="3" fill="url(#skin)" />
+      <rect x="54" y="76" width="12" height="8" rx="2" fill="url(#skinG)" />
 
       {/* ── Head ── */}
-      <ellipse cx="60" cy="55" rx="24" ry="26" fill="url(#skin)" filter="url(#headShadow)" />
+      <ellipse cx="60" cy="52" rx="22" ry="24" fill="url(#skinG)" />
 
       {/* Ears */}
-      <ellipse cx="36" cy="57" rx="4.5" ry="5.5" fill="#f0cdb0" />
-      <ellipse cx="36" cy="57" rx="2.8" ry="3.5" fill="#e6bfa0" />
-      <ellipse cx="84" cy="57" rx="4.5" ry="5.5" fill="#f0cdb0" />
-      <ellipse cx="84" cy="57" rx="2.8" ry="3.5" fill="#e6bfa0" />
+      <ellipse cx="38" cy="54" rx="3.5" ry="4.5" fill="#e8c4a0" />
+      <ellipse cx="82" cy="54" rx="3.5" ry="4.5" fill="#e8c4a0" />
 
-      {/* ── Hair — dark brown, combed/neat style ── */}
-      {/* Main hair mass */}
-      <path d="M36,46 Q36,22 60,18 Q84,22 84,46 L84,40 Q82,26 60,23 Q38,26 36,40 Z" fill="url(#hair)" />
-      {/* Volume on top */}
-      <path d="M34,46 Q32,26 56,16 Q72,14 82,20 Q92,26 88,46 Q86,28 60,24 Q38,26 36,44 Z" fill="url(#hair)" />
+      {/* ── Hair — dark, messy hacker style ── */}
+      <path d="M38,42 Q38,18 60,14 Q82,18 82,42 L82,36 Q80,22 60,19 Q40,22 38,36 Z" fill="url(#hairG)" />
+      <path d="M36,42 Q34,22 58,12 Q74,10 84,18 Q90,24 86,42 Q84,26 60,20 Q40,22 38,40 Z" fill="url(#hairG)" />
+      {/* Messy spikes on top */}
+      <path d="M44,18 L42,8 L50,16" fill="url(#hairG)" />
+      <path d="M54,14 L56,4 L60,14" fill="url(#hairG)" />
+      <path d="M66,14 L70,6 L72,16" fill="url(#hairG)" />
+      <path d="M76,20 L82,12 L80,22" fill="url(#hairG)" />
+      <path d="M36,28 L30,20 L38,26" fill="url(#hairG)" />
       {/* Side hair */}
-      <path d="M36,44 Q34,40 35,34 Q38,28 40,32 Q38,36 38,44" fill="url(#hair)" />
-      <path d="M84,44 Q86,40 85,34 Q82,28 80,32 Q82,36 82,44" fill="url(#hair)" />
-      {/* Fringe — parted, swept slightly right */}
-      <path d="M40,40 Q44,28 56,24 L50,38 Z" fill="#2a1a10" opacity="0.85" />
-      <path d="M46,36 Q52,24 66,24 L58,36 Z" fill="#3b2417" opacity="0.8" />
-      <path d="M78,40 Q80,30 74,26 L72,36 Z" fill="#2a1a10" opacity="0.7" />
-      {/* Hair highlight */}
-      <path d="M52,22 Q60,18 68,20" fill="none" stroke="#5a3a28" strokeWidth="1.2" strokeLinecap="round" opacity="0.4" />
+      <path d="M38,40 Q36,36 37,30 Q40,24 42,28 Q40,32 40,40" fill="url(#hairG)" />
+      <path d="M82,40 Q84,36 83,30 Q80,24 78,28 Q80,32 80,40" fill="url(#hairG)" />
+      {/* Fringe strands falling on forehead */}
+      <path d="M42,36 Q46,22 56,20 L50,34 Z" fill="#0d0d1a" opacity="0.9" />
+      <path d="M48,32 Q54,18 66,18 L58,32 Z" fill="#1a1a2e" opacity="0.8" />
+      <path d="M74,34 Q78,24 72,20 L70,32 Z" fill="#0d0d1a" opacity="0.75" />
 
       {/* ── Eyebrows ── */}
-      <path d={`M46,${isListening ? 45 : 47} Q50,${isListening ? 43 : 45} 54,${isListening ? 45.5 : 47.5}`}
-        fill="none" stroke="#3b2417" strokeWidth="1.6" strokeLinecap="round" />
-      <path d={`M66,${isListening ? 45.5 : 47.5} Q70,${isListening ? 43 : 45} 74,${isListening ? 45 : 47}`}
-        fill="none" stroke="#3b2417" strokeWidth="1.6" strokeLinecap="round" />
+      <path d={`M47,${isListening ? 42 : 44} Q51,${isListening ? 40 : 42} 55,${isListening ? 42.5 : 44.5}`}
+        fill="none" stroke="#1a1a2e" strokeWidth="1.5" strokeLinecap="round" />
+      <path d={`M65,${isListening ? 42.5 : 44.5} Q69,${isListening ? 40 : 42} 73,${isListening ? 42 : 44}`}
+        fill="none" stroke="#1a1a2e" strokeWidth="1.5" strokeLinecap="round" />
 
-      {/* ── Glasses ── */}
-      {/* Left lens */}
-      <ellipse cx="50" cy="54" rx="8" ry="7.5" fill="none" stroke="#3d3020" strokeWidth="1.6" />
-      {/* Right lens */}
-      <ellipse cx="70" cy="54" rx="8" ry="7.5" fill="none" stroke="#3d3020" strokeWidth="1.6" />
+      {/* ── Smart Glasses — rectangular, techy, GLOWING ── */}
+      {/* Lens glow backdrop */}
+      <rect x="43" y="46" width="14" height="10" rx="2" fill={glassesGlow} opacity={isActive ? 0.15 : 0.06} filter="url(#neonGlow)" />
+      <rect x="63" y="46" width="14" height="10" rx="2" fill={glassesGlow} opacity={isActive ? 0.15 : 0.06} filter="url(#neonGlow)" />
+      {/* Left lens frame */}
+      <rect x="43" y="46" width="14" height="10" rx="2.5" fill="none" stroke={glassesGlow} strokeWidth="1.4" opacity={isActive ? 0.9 : 0.6} />
+      {/* Right lens frame */}
+      <rect x="63" y="46" width="14" height="10" rx="2.5" fill="none" stroke={glassesGlow} strokeWidth="1.4" opacity={isActive ? 0.9 : 0.6} />
       {/* Bridge */}
-      <path d="M58,54 Q60,52 62,54" fill="none" stroke="#3d3020" strokeWidth="1.4" />
+      <line x1="57" y1="50" x2="63" y2="50" stroke={glassesGlow} strokeWidth="1.2" opacity={isActive ? 0.8 : 0.5} />
       {/* Temple arms */}
-      <line x1="42" y1="53" x2="36" y2="55" stroke="#3d3020" strokeWidth="1.2" strokeLinecap="round" />
-      <line x1="78" y1="53" x2="84" y2="55" stroke="#3d3020" strokeWidth="1.2" strokeLinecap="round" />
+      <line x1="43" y1="49" x2="38" y2="52" stroke={glassesGlow} strokeWidth="1" opacity="0.5" strokeLinecap="round" />
+      <line x1="77" y1="49" x2="82" y2="52" stroke={glassesGlow} strokeWidth="1" opacity="0.5" strokeLinecap="round" />
+      {/* HUD dots on lenses */}
+      <circle cx="48" cy="49" r="0.6" fill={glassesGlow} opacity={isActive ? 0.8 : 0.3}>
+        {isActive && <animate attributeName="opacity" values="0.3;0.8;0.3" dur="2s" repeatCount="indefinite" />}
+      </circle>
+      <circle cx="72" cy="49" r="0.6" fill={glassesGlow} opacity={isActive ? 0.8 : 0.3}>
+        {isActive && <animate attributeName="opacity" values="0.8;0.3;0.8" dur="2s" repeatCount="indefinite" />}
+      </circle>
       {/* Lens reflection */}
-      <ellipse cx="46" cy="51" rx="2.5" ry="1.5" fill="white" opacity="0.12" />
-      <ellipse cx="66" cy="51" rx="2.5" ry="1.5" fill="white" opacity="0.12" />
+      <line x1="45" y1="47.5" x2="49" y2="47.5" stroke="white" strokeWidth="0.6" opacity="0.15" strokeLinecap="round" />
+      <line x1="65" y1="47.5" x2="69" y2="47.5" stroke="white" strokeWidth="0.6" opacity="0.15" strokeLinecap="round" />
 
-      {/* ── Eyes ── */}
+      {/* ── Eyes (behind glasses) ── */}
       {blink ? (
         <>
-          <line x1="46" y1="55" x2="54" y2="55" stroke="#2a1a10" strokeWidth="1.8" strokeLinecap="round" />
-          <line x1="66" y1="55" x2="74" y2="55" stroke="#2a1a10" strokeWidth="1.8" strokeLinecap="round" />
+          <line x1="47" y1="51" x2="54" y2="51" stroke="#1a1a2e" strokeWidth="1.6" strokeLinecap="round" />
+          <line x1="66" y1="51" x2="73" y2="51" stroke="#1a1a2e" strokeWidth="1.6" strokeLinecap="round" />
         </>
       ) : (
         <>
-          {/* Left eye */}
-          <ellipse cx="50" cy="55" rx="4" ry="4.2" fill="white" />
-          <circle cx={isThinking ? 52 : 50.5} cy={isListening ? 54 : 55} r="2.8" fill="#2a1a10" />
-          <circle cx={isThinking ? 52.8 : 51.2} cy={isListening ? 53.2 : 54.2} r="0.9" fill="white" />
+          <ellipse cx="50" cy="51" rx="3.5" ry="3.8" fill="white" />
+          <circle cx={isThinking ? 51.5 : 50.5} cy={isListening ? 50 : 51} r="2.4" fill="#1a1a2e" />
+          <circle cx={isThinking ? 52.2 : 51.2} cy={isListening ? 49.5 : 50.3} r="0.8" fill="white" />
 
-          {/* Right eye */}
-          <ellipse cx="70" cy="55" rx="4" ry="4.2" fill="white" />
-          <circle cx={isThinking ? 72 : 70.5} cy={isListening ? 54 : 55} r="2.8" fill="#2a1a10" />
-          <circle cx={isThinking ? 72.8 : 71.2} cy={isListening ? 53.2 : 54.2} r="0.9" fill="white" />
+          <ellipse cx="70" cy="51" rx="3.5" ry="3.8" fill="white" />
+          <circle cx={isThinking ? 71.5 : 70.5} cy={isListening ? 50 : 51} r="2.4" fill="#1a1a2e" />
+          <circle cx={isThinking ? 72.2 : 71.2} cy={isListening ? 49.5 : 50.3} r="0.8" fill="white" />
         </>
       )}
 
       {/* Nose */}
-      <path d="M58,62 Q60,65 62,62" fill="none" stroke="#daa885" strokeWidth="1.1" strokeLinecap="round" />
+      <path d="M59,59 Q60,62 61,59" fill="none" stroke="#d4a87a" strokeWidth="1" strokeLinecap="round" />
 
       {/* Mouth */}
       {isSpeaking ? (
-        <ellipse cx="60" cy="70" rx={2.5 + mouthOpen * 1.8} ry={mouthRy} fill="#c0392b" />
+        <ellipse cx="60" cy="66" rx={2.2 + mouthOpen * 1.5} ry={1 + mouthOpen * 3} fill="#333" />
       ) : (
-        <path d={isListening ? "M55,69 Q60,73 65,69" : "M56,69 Q60,72 64,69"}
-          fill="none" stroke="#b85450" strokeWidth="1.3" strokeLinecap="round" />
+        <path d={isListening ? "M56,65 Q60,69 64,65" : "M57,65 Q60,68 63,65"}
+          fill="none" stroke="#555" strokeWidth="1.2" strokeLinecap="round" />
       )}
-
-      {/* Cheek blush */}
-      <circle cx="40" cy="64" r="4" fill="#f0a090" opacity="0.2" />
-      <circle cx="80" cy="64" r="4" fill="#f0a090" opacity="0.2" />
 
       {/* ── State-specific effects ── */}
 
-      {/* Headphones for listening */}
+      {/* Listening — glasses pulse cyan, ear indicators */}
       {isListening && (
         <>
-          <path d="M34,50 Q32,38 40,30" fill="none" stroke="#22d3ee" strokeWidth="2.5" strokeLinecap="round" opacity="0.8" filter="url(#softGlow)" />
-          <path d="M86,50 Q88,38 80,30" fill="none" stroke="#22d3ee" strokeWidth="2.5" strokeLinecap="round" opacity="0.8" filter="url(#softGlow)" />
-          <rect x="30" y="50" width="7" height="11" rx="3" fill="#22d3ee" opacity="0.7" filter="url(#softGlow)" />
-          <rect x="83" y="50" width="7" height="11" rx="3" fill="#22d3ee" opacity="0.7" filter="url(#softGlow)" />
-          <path d="M34,42 Q34,24 60,20 Q86,24 86,42" fill="none" stroke="#22d3ee" strokeWidth="2.5" strokeLinecap="round" opacity="0.6" />
+          <rect x="43" y="46" width="14" height="10" rx="2.5" fill="none" stroke="#22d3ee" strokeWidth="2" opacity="0.4" filter="url(#neonGlow)">
+            <animate attributeName="opacity" values="0.2;0.5;0.2" dur="1.5s" repeatCount="indefinite" />
+          </rect>
+          <rect x="63" y="46" width="14" height="10" rx="2.5" fill="none" stroke="#22d3ee" strokeWidth="2" opacity="0.4" filter="url(#neonGlow)">
+            <animate attributeName="opacity" values="0.2;0.5;0.2" dur="1.5s" repeatCount="indefinite" />
+          </rect>
+          {/* Sound wave indicators near ears */}
+          <path d="M34,50 Q30,54 34,58" fill="none" stroke="#22d3ee" strokeWidth="1.2" opacity="0.5" filter="url(#neonGlow)">
+            <animate attributeName="opacity" values="0.5;0.15;0.5" dur="1s" repeatCount="indefinite" />
+          </path>
+          <path d="M86,50 Q90,54 86,58" fill="none" stroke="#22d3ee" strokeWidth="1.2" opacity="0.5" filter="url(#neonGlow)">
+            <animate attributeName="opacity" values="0.5;0.15;0.5" dur="1s" begin="0.3s" repeatCount="indefinite" />
+          </path>
         </>
       )}
 
-      {/* Thinking bubbles */}
+      {/* Thinking — glasses pulse violet, thought bubbles */}
       {isThinking && (
         <>
-          <circle cx="92" cy="36" r="3" fill="#a78bfa" opacity="0.7" filter="url(#softGlow)">
-            <animate attributeName="opacity" values="0.3;0.8;0.3" dur="1.2s" repeatCount="indefinite" />
+          <rect x="43" y="46" width="14" height="10" rx="2.5" fill="#a78bfa" opacity="0.1" filter="url(#neonGlow)">
+            <animate attributeName="opacity" values="0.05;0.15;0.05" dur="1.8s" repeatCount="indefinite" />
+          </rect>
+          <rect x="63" y="46" width="14" height="10" rx="2.5" fill="#a78bfa" opacity="0.1" filter="url(#neonGlow)">
+            <animate attributeName="opacity" values="0.05;0.15;0.05" dur="1.8s" begin="0.4s" repeatCount="indefinite" />
+          </rect>
+          <circle cx="88" cy="34" r="2.5" fill="#a78bfa" opacity="0.6" filter="url(#neonGlow)">
+            <animate attributeName="opacity" values="0.3;0.7;0.3" dur="1.2s" repeatCount="indefinite" />
           </circle>
-          <circle cx="98" cy="28" r="4" fill="#a78bfa" opacity="0.5" filter="url(#softGlow)">
-            <animate attributeName="opacity" values="0.2;0.7;0.2" dur="1.2s" begin="0.3s" repeatCount="indefinite" />
+          <circle cx="94" cy="26" r="3.5" fill="#a78bfa" opacity="0.45" filter="url(#neonGlow)">
+            <animate attributeName="opacity" values="0.2;0.6;0.2" dur="1.2s" begin="0.3s" repeatCount="indefinite" />
           </circle>
-          <circle cx="102" cy="18" r="5" fill="#a78bfa" opacity="0.4" filter="url(#softGlow)">
-            <animate attributeName="opacity" values="0.15;0.6;0.15" dur="1.2s" begin="0.6s" repeatCount="indefinite" />
+          <circle cx="100" cy="16" r="4.5" fill="#a78bfa" opacity="0.3" filter="url(#neonGlow)">
+            <animate attributeName="opacity" values="0.1;0.45;0.1" dur="1.2s" begin="0.6s" repeatCount="indefinite" />
           </circle>
         </>
       )}
 
-      {/* Speaking sound waves */}
+      {/* Speaking — glasses pulse green, sound waves */}
       {isSpeaking && (
         <>
-          <path d="M86,66 Q92,58 86,50" fill="none" stroke="#34d399" strokeWidth="1.5" strokeLinecap="round" opacity="0.6" filter="url(#softGlow)">
-            <animate attributeName="opacity" values="0.6;0.2;0.6" dur="0.8s" repeatCount="indefinite" />
+          <rect x="43" y="46" width="14" height="10" rx="2.5" fill="#34d399" opacity="0.1" filter="url(#neonGlow)">
+            <animate attributeName="opacity" values="0.05;0.2;0.05" dur="0.6s" repeatCount="indefinite" />
+          </rect>
+          <rect x="63" y="46" width="14" height="10" rx="2.5" fill="#34d399" opacity="0.1" filter="url(#neonGlow)">
+            <animate attributeName="opacity" values="0.05;0.2;0.05" dur="0.6s" begin="0.15s" repeatCount="indefinite" />
+          </rect>
+          <path d="M84,62 Q90,56 84,48" fill="none" stroke="#34d399" strokeWidth="1.3" strokeLinecap="round" opacity="0.5" filter="url(#neonGlow)">
+            <animate attributeName="opacity" values="0.5;0.15;0.5" dur="0.8s" repeatCount="indefinite" />
           </path>
-          <path d="M90,70 Q98,58 90,46" fill="none" stroke="#34d399" strokeWidth="1.2" strokeLinecap="round" opacity="0.4">
-            <animate attributeName="opacity" values="0.4;0.1;0.4" dur="0.8s" begin="0.2s" repeatCount="indefinite" />
-          </path>
-          <path d="M94,74 Q104,58 94,42" fill="none" stroke="#34d399" strokeWidth="0.8" strokeLinecap="round" opacity="0.25">
-            <animate attributeName="opacity" values="0.25;0.05;0.25" dur="0.8s" begin="0.4s" repeatCount="indefinite" />
+          <path d="M88,66 Q96,56 88,44" fill="none" stroke="#34d399" strokeWidth="1" strokeLinecap="round" opacity="0.3">
+            <animate attributeName="opacity" values="0.3;0.08;0.3" dur="0.8s" begin="0.2s" repeatCount="indefinite" />
           </path>
         </>
       )}
