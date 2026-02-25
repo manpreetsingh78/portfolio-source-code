@@ -11,6 +11,8 @@ import ParticleNetwork from '@/components/ParticleNetwork';
 import VoiceAgent from '@/components/VoiceAgent';
 import { ScrollProgress } from '@/components/AnimatedElements';
 
+const ENABLE_AI_VOICE = process.env.NEXT_PUBLIC_ENABLE_AI_VOICE === 'true';
+
 export default function Home() {
   return (
     <main className="bg-white dark:bg-slate-950 text-slate-900 dark:text-white min-h-screen relative">
@@ -25,7 +27,7 @@ export default function Home() {
       <InteractiveLab />
       <Contact />
       <Footer />
-      <VoiceAgent />
+      {ENABLE_AI_VOICE && <VoiceAgent />}
     </main>
   );
 }
