@@ -363,7 +363,7 @@ export default function CapabilityCards() {
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-slate-50/50 dark:via-cyan-950/5 to-transparent" />
 
-      <div className="max-w-7xl mx-auto px-6 relative z-10" ref={ref}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10" ref={ref}>
         <SectionReveal>
           <div className="text-center mb-20">
             <motion.p

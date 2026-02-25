@@ -36,8 +36,12 @@ export default function Navbar() {
           ? 'bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border-b border-slate-200 dark:border-cyan-500/10'
           : 'bg-transparent'
       }`}
+      style={{
+        paddingTop: 'env(safe-area-inset-top, 0px)',
+        WebkitBackdropFilter: scrolled ? 'blur(24px)' : undefined,
+      }}
     >
-      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
         <a href="#home" className="text-xl font-bold gradient-text tracking-tight">
           MS
         </a>
@@ -88,8 +92,9 @@ export default function Navbar() {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             className="md:hidden bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl border-b border-slate-200 dark:border-cyan-500/10"
+            style={{ WebkitBackdropFilter: 'blur(24px)' }}
           >
-            <div className="px-6 py-4 flex flex-col gap-4">
+            <div className="px-4 sm:px-6 py-4 flex flex-col gap-4">
               {navLinks.map((link) => (
                 <a
                   key={link.href}

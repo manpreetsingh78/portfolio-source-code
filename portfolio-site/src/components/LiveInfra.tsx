@@ -171,7 +171,7 @@ export default function LiveInfra() {
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-slate-50/50 dark:via-cyan-950/5 to-transparent" />
 
-      <div className="max-w-5xl mx-auto px-6 relative z-10" ref={ref}>
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10" ref={ref}>
         <SectionReveal>
           <div className="text-center mb-20">
             <motion.p
@@ -205,7 +205,7 @@ export default function LiveInfra() {
                     <div className="w-3 h-3 rounded-full bg-yellow-400" />
                     <div className="w-3 h-3 rounded-full bg-green-400" />
                   </div>
-                  <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">
+                  <span className="text-xs text-slate-500 dark:text-slate-400 font-mono truncate max-w-[180px] sm:max-w-none">
                     {metrics?.hostname || 'ubuntu-s-2vcpu-4gb-blr1-01'}
                   </span>
                 </div>

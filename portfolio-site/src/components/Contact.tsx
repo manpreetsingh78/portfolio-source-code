@@ -103,7 +103,7 @@ export default function Contact() {
       <FloatingOrb delay={2} size={200} x="70%" y="60%" />
       <FloatingOrb delay={4} size={250} x="50%" y="10%" />
 
-      <div className="max-w-7xl mx-auto px-6 relative z-10" ref={ref}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10" ref={ref}>
         <SectionReveal>
           <div className="text-center mb-20">
             <motion.p
@@ -158,7 +158,7 @@ export default function Contact() {
                       <p className="text-[10px] uppercase tracking-wider text-slate-400 dark:text-slate-500 font-medium mb-0.5">
                         {social.label}
                       </p>
-                      <p className="text-sm text-slate-700 dark:text-slate-300 font-medium group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
+                      <p className="text-sm text-slate-700 dark:text-slate-300 font-medium group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors truncate">
                         {social.display}
                       </p>
                     </div>

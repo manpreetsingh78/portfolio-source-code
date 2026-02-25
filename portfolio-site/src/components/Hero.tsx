@@ -22,7 +22,7 @@ export default function Hero() {
     <section
       ref={ref}
       id="home"
-      className="min-h-screen flex items-center relative overflow-hidden"
+      className="min-h-screen min-h-[100dvh] flex items-center relative overflow-hidden"
     >
       {/* Layered backgrounds */}
       <motion.div
@@ -32,13 +32,13 @@ export default function Hero() {
 
       {/* Animated mesh gradient */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] rounded-full bg-gradient-to-r from-cyan-500/8 to-blue-500/8 dark:from-cyan-500/5 dark:to-blue-500/5 blur-3xl animate-float" />
+        <div className="absolute top-[-20%] left-[-10%] w-[300px] h-[300px] sm:w-[600px] sm:h-[600px] rounded-full bg-gradient-to-r from-cyan-500/8 to-blue-500/8 dark:from-cyan-500/5 dark:to-blue-500/5 blur-3xl animate-float" />
         <div
-          className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] rounded-full bg-gradient-to-r from-purple-500/6 to-cyan-500/6 dark:from-purple-500/4 dark:to-cyan-500/4 blur-3xl animate-float"
+          className="absolute bottom-[-20%] right-[-10%] w-[250px] h-[250px] sm:w-[500px] sm:h-[500px] rounded-full bg-gradient-to-r from-purple-500/6 to-cyan-500/6 dark:from-purple-500/4 dark:to-cyan-500/4 blur-3xl animate-float"
           style={{ animationDelay: '-3s' }}
         />
         <div
-          className="absolute top-[40%] left-[40%] w-[400px] h-[400px] rounded-full bg-gradient-to-r from-blue-500/5 to-purple-500/5 dark:from-blue-500/3 dark:to-purple-500/3 blur-3xl animate-float"
+          className="absolute top-[40%] left-[40%] w-[200px] h-[200px] sm:w-[400px] sm:h-[400px] rounded-full bg-gradient-to-r from-blue-500/5 to-purple-500/5 dark:from-blue-500/3 dark:to-purple-500/3 blur-3xl animate-float"
           style={{ animationDelay: '-5s' }}
         />
       </div>
@@ -70,14 +70,14 @@ export default function Hero() {
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
           className="w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent"
-          animate={{ y: ['0vh', '100vh'] }}
+          animate={{ y: ['0dvh', '100dvh'] }}
           transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
         />
       </div>
 
       <motion.div
         style={{ opacity: textOpacity, y: textY }}
-        className="max-w-7xl mx-auto px-6 py-32 grid lg:grid-cols-2 gap-16 items-center relative z-10 w-full"
+        className="max-w-7xl mx-auto px-4 sm:px-6 py-20 sm:py-32 grid lg:grid-cols-2 gap-8 sm:gap-16 items-center relative z-10 w-full"
       >
         {/* Left side */}
         <motion.div
@@ -101,7 +101,7 @@ export default function Hero() {
             </span>
           </motion.div>
 
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold text-slate-900 dark:text-white mb-6 tracking-tight leading-[0.9]">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-slate-900 dark:text-white mb-6 tracking-tight leading-[0.9]">
             <motion.span
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}

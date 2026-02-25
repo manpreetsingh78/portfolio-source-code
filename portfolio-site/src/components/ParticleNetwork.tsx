@@ -30,7 +30,12 @@ export default function ParticleNetwork() {
     resize();
     window.addEventListener('resize', resize);
 
-    const count = Math.min(80, Math.floor(window.innerWidth / 18));
+    const isMobile = window.innerWidth < 768;
+    const count = isMobile
+      ? Math.min(25, Math.floor(window.innerWidth / 30))
+      : Math.min(80, Math.floor(window.innerWidth / 18));
+    const connectionDist = isMobile ? 100 : 150;
+    const mouseDist = isMobile ? 0 : 200; // disable mouse lines on mobile
     particlesRef.current = Array.from({ length: count }, () => ({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
@@ -78,22 +83,22 @@ export default function ParticleNetwork() {
           const dx = p.x - p2.x;
           const dy = p.y - p2.y;
           const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 150) {
+          if (dist < connectionDist) {
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(p2.x, p2.y);
-            ctx.strokeStyle = `rgba(6, 182, 212, ${0.08 * (1 - dist / 150)})`;
+            ctx.strokeStyle = `rgba(6, 182, 212, ${0.08 * (1 - dist / connectionDist)})`;
             ctx.lineWidth = 0.5;
             ctx.stroke();
           }
         }
 
         // Connect to mouse
-        if (md < 200) {
+        if (mouseDist > 0 && md < mouseDist) {
           ctx.beginPath();
           ctx.moveTo(p.x, p.y);
           ctx.lineTo(mouse.x, mouse.y);
-          ctx.strokeStyle = `rgba(6, 182, 212, ${0.15 * (1 - md / 200)})`;
+          ctx.strokeStyle = `rgba(6, 182, 212, ${0.15 * (1 - md / mouseDist)})`;
           ctx.lineWidth = 0.5;
           ctx.stroke();
         }

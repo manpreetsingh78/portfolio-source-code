@@ -199,7 +199,7 @@ function HashResult({ data }: { data: Record<string, unknown> }) {
 
 function GenericResult({ data }: { data: Record<string, unknown> }) {
   return (
-    <pre className="text-[11px] text-slate-600 dark:text-slate-400 font-mono whitespace-pre-wrap bg-slate-100 dark:bg-slate-800/40 rounded-lg p-3 border border-slate-200/50 dark:border-slate-700/30 max-h-48 overflow-auto">
+    <pre className="text-[11px] text-slate-600 dark:text-slate-400 font-mono whitespace-pre-wrap bg-slate-100 dark:bg-slate-800/40 rounded-lg p-3 border border-slate-200/50 dark:border-slate-700/30 max-h-64 overflow-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
       {JSON.stringify(data, null, 2)}
     </pre>
   );
@@ -316,7 +316,7 @@ export default function InteractiveLab() {
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-slate-50/30 dark:via-purple-950/5 to-transparent" />
 
-      <div className="max-w-5xl mx-auto px-6 relative z-10" ref={ref}>
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10" ref={ref}>
         <SectionReveal>
           <div className="text-center mb-20">
             <motion.p

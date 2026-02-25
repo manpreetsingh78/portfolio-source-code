@@ -10,6 +10,14 @@ body {
   font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Safari backdrop-filter support for all Tailwind backdrop-blur classes */
+@supports (-webkit-backdrop-filter: blur(1px)) {
+  [class*='backdrop-blur'] {
+    -webkit-backdrop-filter: var(--tw-backdrop-blur);
+  }
 }
 
 /* Scrollbar */

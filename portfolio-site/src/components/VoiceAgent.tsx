@@ -432,7 +432,10 @@ export default function VoiceAgent() {
   const handleClose = useCallback(() => setIsActive(false), []);
 
   return (
-    <div className="fixed bottom-6 right-6 z-[60] flex flex-col items-center">
+    <div
+      className="fixed bottom-6 right-6 z-[60] flex flex-col items-center"
+      style={{ bottom: 'calc(1.5rem + env(safe-area-inset-bottom, 0px))', right: 'calc(1.5rem + env(safe-area-inset-right, 0px))' }}
+    >
       <AnimatePresence mode="wait">
         {isActive ? (
           <motion.div
@@ -457,7 +460,8 @@ export default function VoiceAgent() {
               px-3 py-1.5 rounded-lg bg-slate-900/95 border border-cyan-500/20
               text-xs text-cyan-400 font-medium whitespace-nowrap
               opacity-0 group-hover:opacity-100 transition-opacity duration-200
-              pointer-events-none backdrop-blur-sm shadow-lg">
+              pointer-events-none backdrop-blur-sm shadow-lg"
+              style={{ WebkitBackdropFilter: 'blur(4px)' }}>
               Talk to my AI
             </div>
 
@@ -473,7 +477,7 @@ export default function VoiceAgent() {
               whileHover={{ scale: 1.06 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => setIsActive(true)}
-              className="relative w-[88px] h-[88px] rounded-full
+              className="relative w-16 h-16 sm:w-[88px] sm:h-[88px] rounded-full
                 border-2 border-cyan-500/20
                 shadow-xl shadow-cyan-500/10
                 cursor-pointer overflow-hidden"

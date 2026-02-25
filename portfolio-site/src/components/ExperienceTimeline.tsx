@@ -55,7 +55,7 @@ export default function ExperienceTimeline() {
         backgroundSize: '32px 32px',
       }} />
 
-      <div className="max-w-5xl mx-auto px-6 relative z-10" ref={ref}>
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10" ref={ref}>
         <SectionReveal>
           <div className="text-center mb-20">
             <motion.p
