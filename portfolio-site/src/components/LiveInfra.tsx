@@ -233,7 +233,7 @@ export default function LiveInfra() {
                 </div>
               </div>
 
-              <div className="p-8">
+              <div className="p-5 sm:p-8">
                 {error && !metrics ? (
                   /* Error state */
                   <div className="text-center py-12">

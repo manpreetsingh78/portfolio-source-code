@@ -56,8 +56,8 @@ const socials = [
 function FloatingOrb({ delay, size, x, y }: { delay: number; size: number; x: string; y: string }) {
   return (
     <motion.div
-      className="absolute rounded-full bg-gradient-to-br from-cyan-500/10 to-blue-500/5 blur-2xl"
-      style={{ width: size, height: size, left: x, top: y }}
+      className="absolute rounded-full bg-gradient-to-br from-cyan-500/10 to-blue-500/5 blur-2xl pointer-events-none"
+      style={{ width: Math.min(size, 200), height: Math.min(size, 200), left: x, top: y, maxWidth: '50vw' }}
       animate={{
         scale: [1, 1.2, 1],
         opacity: [0.3, 0.6, 0.3],
@@ -206,7 +206,7 @@ export default function Contact() {
           {/* Contact form */}
           <SectionReveal direction="right">
             <GradientBorderCard>
-              <div className="p-8">
+              <div className="p-5 sm:p-8">
                 {submitted ? (
                   <motion.div
                     className="text-center py-12"

@@ -155,7 +155,7 @@ export function GradientBorderCard({
       <div className="absolute -inset-[1px] rounded-2xl bg-gradient-to-r from-cyan-500/20 via-blue-500/20 to-purple-500/20 group-hover:from-cyan-500/50 group-hover:via-blue-500/50 group-hover:to-purple-500/50 transition-all duration-500 blur-[1px] opacity-0 group-hover:opacity-100" />
       <div className="absolute -inset-[1px] rounded-2xl bg-gradient-to-r from-cyan-500/10 via-blue-500/10 to-purple-500/10 animate-border-rotate opacity-50" />
       {/* Content */}
-      <div className="relative glass rounded-2xl bg-white/60 dark:bg-slate-900/60 border border-slate-200 dark:border-cyan-500/10 group-hover:border-transparent transition-all duration-500">
+      <div className="relative glass rounded-2xl bg-white/60 dark:bg-slate-900/60 border border-slate-200 dark:border-cyan-500/10 group-hover:border-transparent transition-all duration-500 overflow-hidden">
         {children}
       </div>
     </div>

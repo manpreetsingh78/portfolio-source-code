@@ -364,7 +364,7 @@ export default function InteractiveLab() {
                 </a>
               </div>
 
-              <div className="p-6 sm:p-8">
+              <div className="p-4 sm:p-6 md:p-8">
                 {/* Tab groups */}
                 <div className="space-y-3 mb-6">
                   {/* AI tabs */}

@@ -75,7 +75,7 @@ export default function ExperienceTimeline() {
         {/* Main experience card */}
         <SectionReveal>
           <GradientBorderCard>
-            <div className="p-8 md:p-10">
+            <div className="p-5 sm:p-8 md:p-10">
               {/* Header row */}
               <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-8">
                 <div className="flex items-start gap-4">

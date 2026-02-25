@@ -15,7 +15,7 @@ const ENABLE_AI_VOICE = process.env.NEXT_PUBLIC_ENABLE_AI_VOICE === 'true';
 
 export default function Home() {
   return (
-    <main className="bg-white dark:bg-slate-950 text-slate-900 dark:text-white min-h-screen relative">
+    <main className="bg-white dark:bg-slate-950 text-slate-900 dark:text-white min-h-screen relative overflow-x-hidden">
       <ScrollProgress />
       <ParticleNetwork />
       <Navbar />

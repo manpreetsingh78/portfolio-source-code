@@ -110,8 +110,8 @@ function ApiFlowViz() {
   ];
 
   return (
-    <div className="h-44 flex items-center justify-center px-2">
-      <div className="flex items-center gap-1 w-full justify-center">
+    <div className="h-44 flex items-center justify-center px-2 overflow-hidden">
+      <div className="flex items-center gap-1 w-full justify-center min-w-0">
         {steps.map((step, i) => (
           <motion.div
             key={step.label}
@@ -177,10 +177,10 @@ function CiCdViz() {
   ];
 
   return (
-    <div className="h-44 flex items-center justify-center">
-      <div className="relative w-full flex flex-col items-center gap-4">
+    <div className="h-44 flex items-center justify-center overflow-hidden">
+      <div className="relative w-full flex flex-col items-center gap-4 min-w-0">
         {/* Pipeline track */}
-        <div className="flex items-center gap-1 w-full justify-center">
+        <div className="flex items-center gap-1 w-full justify-center min-w-0">
           {stages.map((stage, i) => (
             <motion.div
               key={stage.label}
@@ -259,9 +259,9 @@ function WaveformViz() {
   }));
 
   return (
-    <div className="h-44 flex flex-col items-center justify-center gap-4">
+    <div className="h-44 flex flex-col items-center justify-center gap-4 overflow-hidden">
       {/* Labels */}
-      <div className="flex items-center gap-3 w-full justify-center">
+      <div className="flex items-center gap-2 sm:gap-3 w-full justify-center min-w-0">
         <motion.span
           className="text-[8px] font-mono px-2 py-1 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20"
           animate={{ opacity: [0.5, 1, 0.5] }}
@@ -359,7 +359,7 @@ export default function CapabilityCards() {
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
   return (
-    <section id="capabilities" className="py-32 relative">
+    <section id="capabilities" className="py-32 relative overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-slate-50/50 dark:via-cyan-950/5 to-transparent" />
 
@@ -386,7 +386,7 @@ export default function CapabilityCards() {
             return (
               <SectionReveal key={cap.title} delay={i * 0.12}>
                 <GradientBorderCard>
-                  <div className="p-8 h-full">
+                  <div className="p-5 sm:p-8 h-full">
                     {/* Header */}
                     <div className="flex items-start justify-between mb-2">
                       <div className="flex items-center gap-3">
