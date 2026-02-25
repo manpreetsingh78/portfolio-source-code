@@ -11,9 +11,12 @@ import {
   CheckCircle,
   ArrowUpRight,
   Sparkles,
+  AlertCircle,
 } from 'lucide-react';
 import SectionReveal from './SectionReveal';
 import { GradientBorderCard } from './AnimatedElements';
+
+const VM_API = process.env.NEXT_PUBLIC_VM_API_URL || 'https://api.manpreetsingh.co.in';
 
 const socials = [
   {
@@ -67,6 +70,7 @@ function FloatingOrb({ delay, size, x, y }: { delay: number; size: number; x: st
 export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [focusedField, setFocusedField] = useState<string | null>(null);
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
@@ -74,6 +78,7 @@ export default function Contact() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
+    setError(null);
 
     const formData = new FormData(e.currentTarget);
     const data = {
@@ -83,14 +88,20 @@ export default function Contact() {
     };
 
     try {
-      const res = await fetch('/api/contact', {
+      const res = await fetch(`${VM_API}/api/v1/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
+        signal: AbortSignal.timeout(10000),
       });
-      if (res.ok) setSubmitted(true);
+      if (res.ok) {
+        setSubmitted(true);
+      } else {
+        const body = await res.json().catch(() => null);
+        setError(body?.detail || `Something went wrong (${res.status})`);
+      }
     } catch {
-      // Silently handle
+      setError('Failed to send message. Please try again or reach out directly via email.');
     } finally {
       setLoading(false);
     }
@@ -294,6 +305,17 @@ export default function Contact() {
                         </>
                       )}
                     </motion.button>
+
+                    {error && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="flex items-center gap-2 p-3 rounded-xl bg-red-50 dark:bg-red-500/10 border border-red-200/50 dark:border-red-500/20"
+                      >
+                        <AlertCircle size={16} className="text-red-500 shrink-0" />
+                        <p className="text-xs text-red-600 dark:text-red-400">{error}</p>
+                      </motion.div>
+                    )}
                   </form>
                 )}
               </div>
