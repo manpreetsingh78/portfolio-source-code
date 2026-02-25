@@ -96,7 +96,7 @@ def deploy() -> tuple[bool, str]:
         # 4. Install deps
         log("==> Installing dependencies...")
         rc, out = run_cmd(
-            f"source {APP_DIR}/venv/bin/activate && pip install -q -r {APP_DIR}/requirements.txt",
+            f"{APP_DIR}/venv/bin/pip install -q -r {APP_DIR}/requirements.txt",
             cwd=APP_DIR
         )
         if rc != 0:
@@ -108,18 +108,25 @@ def deploy() -> tuple[bool, str]:
         rc, out = run_cmd("systemctl restart portfolio-api")
         if rc != 0:
             return False, f"Restart failed: {out}"
-        time.sleep(3)
         steps.append("restarted")
 
-        # 6. Health check
+        # 6. Health check with retries
         log("==> Running health check...")
-        rc, out = run_cmd("curl -s -o /dev/null -w '%{http_code}' http://localhost:8000/api/v1/system/health")
-        if out.strip("'") != "200":
+        health_ok = False
+        for attempt in range(5):
+            time.sleep(3)
+            rc, out = run_cmd("curl -s -o /dev/null -w '%{http_code}' http://localhost:8000/api/v1/system/health")
+            code = out.strip().strip("'")
+            if code == "200":
+                health_ok = True
+                break
+            log(f"    Health check attempt {attempt + 1}/5: HTTP {code}")
+        if not health_ok:
             # Rollback
-            log(f"==> Health check failed (HTTP {out}), rolling back...")
+            log(f"==> Health check failed after 5 attempts, rolling back...")
             run_cmd(f"cp {APP_DIR}/main.py.bak {APP_DIR}/main.py")
             run_cmd("systemctl restart portfolio-api")
-            return False, f"Health check failed (HTTP {out}), rolled back"
+            return False, f"Health check failed (HTTP {code}), rolled back"
         steps.append("health OK")
 
         # Cleanup
