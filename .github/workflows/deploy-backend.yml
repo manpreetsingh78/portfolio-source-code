@@ -1,0 +1,67 @@
+name: Deploy Backend API
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'backend/api/**'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy to VM
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to VM via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.VM_HOST }}
+          username: root
+          key: ${{ secrets.VM_SSH_KEY }}
+          script_stop: true
+          script: |
+            set -e
+            echo "==> Deploying backend API..."
+
+            APP_DIR="/opt/portfolio-api"
+
+            # Backup current main.py
+            cp "$APP_DIR/main.py" "$APP_DIR/main.py.bak" 2>/dev/null || true
+
+            echo "==> Pulling latest code..."
+            cd /tmp
+            rm -rf portfolio-deploy
+            git clone --depth 1 --branch main https://github.com/manpreetsingh78/portfolio-source-code.git portfolio-deploy
+
+            echo "==> Copying backend files..."
+            cp portfolio-deploy/backend/api/main.py "$APP_DIR/main.py"
+            cp portfolio-deploy/backend/api/requirements.txt "$APP_DIR/requirements.txt"
+
+            echo "==> Installing dependencies..."
+            cd "$APP_DIR"
+            source venv/bin/activate
+            pip install -q -r requirements.txt
+
+            echo "==> Restarting service..."
+            systemctl restart portfolio-api
+            sleep 3
+
+            echo "==> Verifying health..."
+            HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8000/api/v1/system/health)
+            if [ "$HTTP_CODE" = "200" ]; then
+              echo "==> Health check passed (HTTP $HTTP_CODE)"
+              rm -rf /tmp/portfolio-deploy
+              rm -f "$APP_DIR/main.py.bak"
+              echo "==> Deploy successful!"
+            else
+              echo "==> Health check FAILED (HTTP $HTTP_CODE). Rolling back..."
+              cp "$APP_DIR/main.py.bak" "$APP_DIR/main.py"
+              systemctl restart portfolio-api
+              rm -rf /tmp/portfolio-deploy
+              exit 1
+            fi
