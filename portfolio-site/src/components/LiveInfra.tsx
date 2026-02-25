@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 import SectionReveal from './SectionReveal';
 
-const VM_API = process.env.NEXT_PUBLIC_VM_API_URL || 'http://134.209.157.0';
+const VM_API = process.env.NEXT_PUBLIC_VM_API_URL || 'https://api.manpreetsingh.co.in';
 
 interface SystemMetrics {
   cpu: { percent: number; cores: number; freq_mhz: number | null };
