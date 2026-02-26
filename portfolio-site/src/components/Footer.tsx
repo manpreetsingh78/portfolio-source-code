@@ -33,8 +33,8 @@ export default function Footer() {
           {/* Center - social links */}
           <div className="flex items-center gap-4">
             {[
-              { icon: Github, href: 'https://github.com/manpreet-singh', label: 'GitHub' },
-              { icon: Linkedin, href: 'https://linkedin.com/in/manpreet-singh', label: 'LinkedIn' },
+              { icon: Github, href: 'https://github.com/manpreetsingh78/', label: 'GitHub' },
+              { icon: Linkedin, href: 'https://www.linkedin.com/in/manpreetsingh78/', label: 'LinkedIn' },
             ].map((link) => {
               const Icon = link.icon;
               return (
