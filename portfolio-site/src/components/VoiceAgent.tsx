@@ -136,22 +136,24 @@ function BoyAvatar({ state }: { state: string }) {
       <ellipse cx="38" cy="54" rx="3.5" ry="4.5" fill="#e8c4a0" />
       <ellipse cx="82" cy="54" rx="3.5" ry="4.5" fill="#e8c4a0" />
 
-      {/* ── Hair — dark, messy hacker style ── */}
-      <path d="M38,42 Q38,18 60,14 Q82,18 82,42 L82,36 Q80,22 60,19 Q40,22 38,36 Z" fill="url(#hairG)" />
-      <path d="M36,42 Q34,22 58,12 Q74,10 84,18 Q90,24 86,42 Q84,26 60,20 Q40,22 38,40 Z" fill="url(#hairG)" />
-      {/* Messy spikes on top */}
-      <path d="M44,18 L42,8 L50,16" fill="url(#hairG)" />
-      <path d="M54,14 L56,4 L60,14" fill="url(#hairG)" />
-      <path d="M66,14 L70,6 L72,16" fill="url(#hairG)" />
-      <path d="M76,20 L82,12 L80,22" fill="url(#hairG)" />
-      <path d="M36,28 L30,20 L38,26" fill="url(#hairG)" />
-      {/* Side hair */}
-      <path d="M38,40 Q36,36 37,30 Q40,24 42,28 Q40,32 40,40" fill="url(#hairG)" />
-      <path d="M82,40 Q84,36 83,30 Q80,24 78,28 Q80,32 80,40" fill="url(#hairG)" />
-      {/* Fringe strands falling on forehead */}
-      <path d="M42,36 Q46,22 56,20 L50,34 Z" fill="#0d0d1a" opacity="0.9" />
-      <path d="M48,32 Q54,18 66,18 L58,32 Z" fill="#1a1a2e" opacity="0.8" />
-      <path d="M74,34 Q78,24 72,20 L70,32 Z" fill="#0d0d1a" opacity="0.75" />
+      {/* ── Hair — smooth, modern swept-back style ── */}
+      {/* Back of head - main hair mass */}
+      <ellipse cx="60" cy="32" rx="24" ry="18" fill="url(#hairG)" />
+      {/* Top crown - fuller */}
+      <path d="M40,36 Q40,18 60,14 Q80,18 80,36" fill="url(#hairG)" />
+      {/* Left side curve */}
+      <path d="M38,42 Q34,38 35,32 Q36,22 44,20" fill="url(#hairG)" />
+      {/* Right side curve */}
+      <path d="M82,42 Q86,38 85,32 Q84,22 76,20" fill="url(#hairG)" />
+      {/* Sweeping fringe left side */}
+      <path d="M42,40 Q46,32 52,30 L48,42 Z" fill="#1a1a2e" opacity="0.85" />
+      {/* Sweeping fringe center */}
+      <path d="M54,38 Q58,28 66,29 L60,42 Z" fill="#0f0f1a" opacity="0.8" />
+      {/* Sweeping fringe right side */}
+      <path d="M70,40 Q74,32 78,30 L72,42 Z" fill="#1a1a2e" opacity="0.85" />
+      {/* Highlight strands on top - lighter shade */}
+      <path d="M48,18 Q55,12 65,14 Q68,16 66,20" fill="url(#hairG)" opacity="0.7" />
+      <path d="M52,22 Q60,16 70,19" fill="url(#hairG)" opacity="0.6" />
 
       {/* ── Eyebrows ── */}
       <path d={`M47,${isListening ? 42 : 44} Q51,${isListening ? 40 : 42} 55,${isListening ? 42.5 : 44.5}`}
