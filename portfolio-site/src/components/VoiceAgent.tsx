@@ -409,18 +409,10 @@ function VoiceSession({ onClose }: { onClose: () => void }) {
   useEffect(() => {
     if (!hasStarted.current) {
       hasStarted.current = true;
-      const initSession = async () => {
-        try {
-          await session.start();
-        } catch (err) {
-          console.error('[VoiceSession] Failed to start:', err);
-          onClose();
-        }
-      };
-      initSession();
+      session.start();
     }
     return () => { session.end(); };
-  }, [session, onClose]);
+  }, []);
 
   const handleStop = useCallback(() => {
     session.end();
