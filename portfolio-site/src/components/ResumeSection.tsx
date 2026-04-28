@@ -35,7 +35,7 @@ export default function ResumeSection() {
 
             <div className="flex flex-wrap justify-center gap-4">
               <a
-                href="/resume.pdf"
+                href="/Manpreet%20Singh.pdf"
                 download
                 className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-lg font-medium hover:shadow-lg hover:shadow-cyan-500/25 transition-all duration-300 flex items-center gap-2"
               >
@@ -43,7 +43,7 @@ export default function ResumeSection() {
                 Download PDF
               </a>
               <a
-                href="/resume.pdf"
+                href="/Manpreet%20Singh.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-6 py-3 bg-slate-100 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 rounded-lg font-medium hover:bg-slate-200 dark:hover:bg-slate-700/80 transition-all duration-300 border border-slate-200 dark:border-slate-700 flex items-center gap-2"
