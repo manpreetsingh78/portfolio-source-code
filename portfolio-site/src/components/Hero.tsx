@@ -10,7 +10,7 @@ export default function Hero() {
   const startDate = new Date(2022, 6, 1); // July 2022
   const now = new Date();
   const diffYears = (now.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 365.25);
-  const years = Math.floor(diffYears * 10) / 10;
+  const years = Math.round(diffYears);
 
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
