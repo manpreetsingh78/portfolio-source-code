@@ -18,9 +18,10 @@ export function AnimatedCounter({
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
   const count = useMotionValue(0);
+  const isFractional = !Number.isInteger(target);
   const rounded = useTransform(count, (v) => {
     if (target < 1) return v.toFixed(2);
-    if (target < 100) return Math.round(v).toString();
+    if (isFractional) return v.toFixed(1);
     return Math.round(v).toString();
   });
   const [display, setDisplay] = useState('0');

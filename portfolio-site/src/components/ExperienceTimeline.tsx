@@ -5,6 +5,7 @@ import { useRef } from 'react';
 import { Briefcase, Calendar, Zap, ArrowUpRight } from 'lucide-react';
 import SectionReveal from './SectionReveal';
 import { AnimatedCounter, GradientBorderCard } from './AnimatedElements';
+import { getYearsExperience } from '@/lib/experience';
 
 const responsibilities = [
   {
@@ -34,7 +35,7 @@ const responsibilities = [
 ];
 
 const stats = [
-  { label: 'Years Active', value: (() => { const start = new Date(2022, 6, 1); const now = new Date(); return Math.max(1, Math.floor((now.getTime() - start.getTime()) / (365.25 * 86400000))); })(), suffix: '+' },
+  { label: 'Years Active', value: getYearsExperience(), suffix: '+' },
   { label: 'Projects Shipped', value: 30, suffix: '+' },
   { label: 'Technologies', value: 25, suffix: '+' },
   { label: 'Lines of Code', value: 500, suffix: 'K+' },
