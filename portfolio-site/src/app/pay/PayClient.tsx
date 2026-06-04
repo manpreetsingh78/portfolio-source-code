@@ -26,12 +26,63 @@ const PAYTM_VPA = 'paytmqr5ozdut@ptys';
 const PAYTM_PAYEE_LABEL = 'Paytm'; // matches what the original QR encodes
 
 // Same payload as the decoded QR — keeps the merchant identity consistent.
-const UPI_DEEPLINK = `upi://pay?${new URLSearchParams({
+const UPI_PARAMS = new URLSearchParams({
   pa: PAYTM_VPA,
   pn: PAYTM_PAYEE_LABEL,
   tn: 'Verified Paytm Merchant',
   cu: 'INR',
-}).toString()}`;
+}).toString();
+
+// Generic UPI intent — on Android opens the system chooser, on iOS opens
+// whichever UPI app is registered as default (often unpredictable).
+const UPI_DEEPLINK = `upi://pay?${UPI_PARAMS}`;
+
+// App-specific schemes target a single app directly. If the app isn't
+// installed, iOS silently no-ops and Android shows a "no app found" prompt.
+const UPI_APPS = [
+  {
+    id: 'gpay',
+    label: 'Google Pay',
+    href: `tez://upi/pay?${UPI_PARAMS}`,
+    bg: 'bg-white dark:bg-white',
+    border: 'border-slate-200',
+    text: 'text-slate-900',
+    glyph: (
+      <svg viewBox="0 0 24 24" className="w-5 h-5" aria-hidden="true">
+        <path fill="#4285F4" d="M22.18 12.27c0-.7-.06-1.37-.18-2.02H12v3.83h5.7a4.88 4.88 0 0 1-2.12 3.2v2.66h3.43c2-1.85 3.17-4.57 3.17-7.67Z" />
+        <path fill="#34A853" d="M12 22.5c2.85 0 5.25-.95 7-2.55l-3.43-2.66c-.95.64-2.16 1.02-3.57 1.02-2.74 0-5.07-1.85-5.9-4.34H2.55v2.74A10.5 10.5 0 0 0 12 22.5Z" />
+        <path fill="#FBBC05" d="M6.1 13.97a6.32 6.32 0 0 1 0-3.94V7.29H2.55a10.5 10.5 0 0 0 0 9.42L6.1 13.97Z" />
+        <path fill="#EA4335" d="M12 5.69c1.55 0 2.94.53 4.04 1.58l3.04-3.04A10.5 10.5 0 0 0 12 1.5c-4.1 0-7.66 2.36-9.45 5.79L6.1 10.03c.83-2.49 3.16-4.34 5.9-4.34Z" />
+      </svg>
+    ),
+  },
+  {
+    id: 'phonepe',
+    label: 'PhonePe',
+    href: `phonepe://pay?${UPI_PARAMS}`,
+    bg: 'bg-[#5F259F]',
+    border: 'border-[#5F259F]',
+    text: 'text-white',
+    glyph: (
+      <span className="w-5 h-5 rounded-full bg-white text-[#5F259F] text-[10px] font-bold flex items-center justify-center" aria-hidden="true">
+        Pe
+      </span>
+    ),
+  },
+  {
+    id: 'paytm',
+    label: 'Paytm',
+    href: `paytmmp://pay?${UPI_PARAMS}`,
+    bg: 'bg-[#002970]',
+    border: 'border-[#002970]',
+    text: 'text-white',
+    glyph: (
+      <span className="w-5 h-5 rounded-md bg-[#00B9F5] text-white text-[9px] font-bold flex items-center justify-center" aria-hidden="true">
+        P
+      </span>
+    ),
+  },
+] as const;
 
 function detectMobile(): boolean {
   if (typeof navigator === 'undefined') return false;
@@ -182,16 +233,34 @@ export default function PayClient() {
                 />
               </motion.a>
 
-              {/* Paytm UPI — deeplink on mobile, QR modal on desktop */}
+              {/* Paytm UPI — app picker on mobile, QR modal on desktop */}
               {isMobile ? (
-                <motion.a
-                  href={UPI_DEEPLINK}
-                  whileTap={{ scale: 0.99 }}
-                  className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/60 text-slate-800 dark:text-slate-100 font-medium border border-slate-200 dark:border-slate-700 hover:border-cyan-500/40 hover:text-cyan-600 dark:hover:text-cyan-400 transition-all"
-                >
-                  <Smartphone size={18} />
-                  <span>Pay via UPI app</span>
-                </motion.a>
+                <div className="space-y-2.5">
+                  <p className="text-[11px] uppercase tracking-wider text-slate-400 dark:text-slate-500 font-medium pt-1">
+                    Pay with UPI
+                  </p>
+                  <div className="grid grid-cols-3 gap-2">
+                    {UPI_APPS.map((app) => (
+                      <motion.a
+                        key={app.id}
+                        href={app.href}
+                        whileTap={{ scale: 0.97 }}
+                        className={`flex flex-col items-center justify-center gap-1.5 py-3 px-2 rounded-xl border ${app.bg} ${app.border} ${app.text} font-medium text-xs transition-all hover:shadow-md hover:shadow-cyan-500/10`}
+                      >
+                        {app.glyph}
+                        <span className="leading-none">{app.label}</span>
+                      </motion.a>
+                    ))}
+                  </div>
+                  <motion.a
+                    href={UPI_DEEPLINK}
+                    whileTap={{ scale: 0.99 }}
+                    className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-slate-100 dark:bg-slate-800/60 text-slate-700 dark:text-slate-300 text-sm font-medium border border-slate-200 dark:border-slate-700 hover:border-cyan-500/40 hover:text-cyan-600 dark:hover:text-cyan-400 transition-all"
+                  >
+                    <Smartphone size={16} />
+                    <span>Other UPI app</span>
+                  </motion.a>
+                </div>
               ) : (
                 <button
                   type="button"
