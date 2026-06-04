@@ -44,43 +44,19 @@ const UPI_APPS = [
     id: 'gpay',
     label: 'Google Pay',
     href: `tez://upi/pay?${UPI_PARAMS}`,
-    bg: 'bg-white dark:bg-white',
-    border: 'border-slate-200',
-    text: 'text-slate-900',
-    glyph: (
-      <svg viewBox="0 0 24 24" className="w-5 h-5" aria-hidden="true">
-        <path fill="#4285F4" d="M22.18 12.27c0-.7-.06-1.37-.18-2.02H12v3.83h5.7a4.88 4.88 0 0 1-2.12 3.2v2.66h3.43c2-1.85 3.17-4.57 3.17-7.67Z" />
-        <path fill="#34A853" d="M12 22.5c2.85 0 5.25-.95 7-2.55l-3.43-2.66c-.95.64-2.16 1.02-3.57 1.02-2.74 0-5.07-1.85-5.9-4.34H2.55v2.74A10.5 10.5 0 0 0 12 22.5Z" />
-        <path fill="#FBBC05" d="M6.1 13.97a6.32 6.32 0 0 1 0-3.94V7.29H2.55a10.5 10.5 0 0 0 0 9.42L6.1 13.97Z" />
-        <path fill="#EA4335" d="M12 5.69c1.55 0 2.94.53 4.04 1.58l3.04-3.04A10.5 10.5 0 0 0 12 1.5c-4.1 0-7.66 2.36-9.45 5.79L6.1 10.03c.83-2.49 3.16-4.34 5.9-4.34Z" />
-      </svg>
-    ),
+    logo: '/logos/gpay.svg',
   },
   {
     id: 'phonepe',
     label: 'PhonePe',
     href: `phonepe://pay?${UPI_PARAMS}`,
-    bg: 'bg-[#5F259F]',
-    border: 'border-[#5F259F]',
-    text: 'text-white',
-    glyph: (
-      <span className="w-5 h-5 rounded-full bg-white text-[#5F259F] text-[10px] font-bold flex items-center justify-center" aria-hidden="true">
-        Pe
-      </span>
-    ),
+    logo: '/logos/phonepe.svg',
   },
   {
     id: 'paytm',
     label: 'Paytm',
     href: `paytmmp://pay?${UPI_PARAMS}`,
-    bg: 'bg-[#002970]',
-    border: 'border-[#002970]',
-    text: 'text-white',
-    glyph: (
-      <span className="w-5 h-5 rounded-md bg-[#00B9F5] text-white text-[9px] font-bold flex items-center justify-center" aria-hidden="true">
-        P
-      </span>
-    ),
+    logo: '/logos/paytm.svg',
   },
 ] as const;
 
@@ -245,10 +221,20 @@ export default function PayClient() {
                         key={app.id}
                         href={app.href}
                         whileTap={{ scale: 0.97 }}
-                        className={`flex flex-col items-center justify-center gap-1.5 py-3 px-2 rounded-xl border ${app.bg} ${app.border} ${app.text} font-medium text-xs transition-all hover:shadow-md hover:shadow-cyan-500/10`}
+                        aria-label={`Pay with ${app.label}`}
+                        className="flex flex-col items-center justify-center gap-2 py-4 px-2 rounded-xl bg-white dark:bg-white border border-slate-200 transition-all hover:shadow-md hover:shadow-cyan-500/10 hover:border-cyan-500/30"
                       >
-                        {app.glyph}
-                        <span className="leading-none">{app.label}</span>
+                        <Image
+                          src={app.logo}
+                          alt=""
+                          width={72}
+                          height={24}
+                          className="h-6 w-auto object-contain"
+                          unoptimized
+                        />
+                        <span className="text-[10px] leading-none text-slate-500 font-medium">
+                          {app.label}
+                        </span>
                       </motion.a>
                     ))}
                   </div>
